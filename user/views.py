@@ -95,7 +95,7 @@ class MyHistoryView(ListView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
 
-        reviews_for_studies_on_current_page = Review.objects.filter(
+        reviews_for_studies = Review.objects.filter(
             reviewer=self.request.user,
             study__in=context["studies"],
         ).order_by("study")
@@ -103,7 +103,7 @@ class MyHistoryView(ListView):
         grouped_reviews = [
             (study, list(reviews))
             for study, reviews in groupby(
-                reviews_for_studies_on_current_page, key=lambda review: review.study
+                reviews_for_studies, key=lambda review: review.study
             )
         ]
 
